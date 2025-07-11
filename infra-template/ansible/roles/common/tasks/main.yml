@@ -1,0 +1,35 @@
+- name: Обновление системы
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: Создать приветствие для root
+  template:
+    src: root_motd.sh.j2
+    dest: /etc/profile.d/root_motd.sh
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: Создать директорию для bash-конфигов
+  file:
+    path: /root/.bashrc.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Установить кастомный PS1 для root
+  copy:
+    dest: /root/.bashrc.d/prompt.sh
+    content: |
+      export PS1="\[\033[1;{{ prompt_color | default('36') }}m\][{{ server_prompt | default(inventory_hostname) }}]\[\033[0m\] \w# "
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure root .bashrc sources .bashrc.d scripts
+  lineinfile:
+    path: /root/.bashrc
+    line: 'for f in ~/.bashrc.d/*; do source "$f"; done'
+    create: yes

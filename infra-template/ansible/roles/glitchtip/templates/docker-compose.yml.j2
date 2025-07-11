@@ -1,0 +1,34 @@
+services:
+    redis:
+        image: valkey/valkey
+        restart: unless-stopped
+    web:
+        image: glitchtip/glitchtip
+        depends_on:
+            - redis
+        ports:
+            - "127.0.0.1:8000:8000"
+        restart: unless-stopped
+        volumes:
+            - uploads:/code/uploads
+        env_file:
+          - .env
+    worker:
+        image: glitchtip/glitchtip
+        depends_on:
+            - redis
+        command: ./bin/run-celery-with-beat.sh
+        restart: unless-stopped
+        volumes:
+            - uploads:/code/uploads
+        env_file:
+          - .env
+    migrate:
+        image: glitchtip/glitchtip
+        depends_on:
+            - redis
+        command: ./bin/run-migrate.sh
+        env_file:
+          - .env
+volumes:
+    uploads:

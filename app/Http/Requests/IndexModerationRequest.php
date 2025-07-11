@@ -1,0 +1,51 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Requests;
+
+use App\Models\User;
+use App\Rules\Daterange;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class IndexModerationRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'daterange' => ['string', new Daterange()],
+
+            //            'statuses' => 'array',
+            //            'statuses.*' => [Rule::in(User::STATUSES)],
+            //            'deletedStatuses' => 'array',
+            //            'deletedStatuses.*' => [Rule::in(User::DELETED_STATUSES)],
+            'startDate' => ['date', 'date_format:Y-m-d'],
+            'endDate' => ['date', 'date_format:Y-m-d', 'after_or_equal:' . $this->get('startDate')],
+        ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $dateRange = request()
+            ->get('daterange', '');
+
+        $this->merge([
+            'startDate' => explode(' - ', $dateRange)[0] ?: '2025-01-01',
+            'endDate' => explode(' - ', $dateRange)[1] ?? now()->format('Y-m-d'),
+        ]);
+    }
+}

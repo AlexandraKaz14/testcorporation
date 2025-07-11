@@ -1,0 +1,19 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfiledev
+  horizon:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfiledev
+  schedule:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfiledev
+  node:
+    command: sh -c "npm install && npm run dev -- --host"
+    ports:
+      - "5174:5174" # port for Vite
+    environment:
+      - CHOKIDAR_USEPOLLING=true

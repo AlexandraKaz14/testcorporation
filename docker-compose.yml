@@ -1,0 +1,97 @@
+services:
+  app:
+    image: backend:latest
+    container_name: testcorporation_php
+    restart: unless-stopped
+    working_dir: /var/www/
+    ports:
+        - "9000:9000"   # php-fpm
+    environment:
+        - XDEBUG_MODE=${XDEBUG_MODE}
+        - XDEBUG_START_WITH_REQUEST=${XDEBUG_START_WITH_REQUEST}
+        - PHP_IDE_CONFIG=serverName=laravel-docker
+    extra_hosts:
+        - "host.docker.internal:host-gateway"
+    volumes:
+      - ./:/var/www
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - testcorporation
+
+  db:
+    image: postgres:17.4
+    container_name: testcorporation_db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+    volumes:
+      - ./docker/db:/var/lib/postgresql/data
+    networks:
+      - testcorporation
+
+  nginx:
+    image: nginx:alpine
+    container_name: testcorporation_nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - testcorporation
+
+  node:
+      image: node:18
+      container_name: testcorporation_node
+      working_dir: /var/www
+      volumes:
+          - .:/var/www
+      command: sh -c "npm install && npm run dev"
+      depends_on:
+          - app
+      networks:
+          - testcorporation
+
+  redis:
+      image: redis:latest
+      restart: always
+      container_name: testcorporation_redis
+      ports:
+          - 8379:6379
+      networks:
+          - testcorporation
+
+  horizon:
+      image: backend:latest
+      restart: always
+      container_name: testcorporation_horizon
+      depends_on:
+          - redis
+      command: php artisan horizon
+      volumes:
+          - ./storage:/var/www/storage
+          - ./.env:/var/www/.env
+      networks:
+          - testcorporation
+
+  schedule:
+      image: backend:latest
+      restart: always
+      container_name: testcorporation_schedule
+      depends_on:
+          - redis
+      command: php artisan schedule:work
+      volumes:
+          - ./storage:/var/www/storage
+          - ./.env:/var/www/.env
+      networks:
+          - testcorporation
+
+networks:
+  testcorporation:
+    driver: bridge

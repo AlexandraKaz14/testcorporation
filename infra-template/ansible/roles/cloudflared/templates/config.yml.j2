@@ -1,0 +1,11 @@
+tunnel: {{ cloudflared_tunnel_id }}
+credentials-file: {{ cloudflared_credentials_file }}
+
+ingress:
+  - hostname: {{ project_hostname }}
+    service: http://localhost:80
+  - hostname: {{ grafana_hostname }}
+    service: http://localhost:3000
+  - hostname: {{ glitchtip_hostname }}
+    service: http://localhost:8000
+  - service: http_status:404

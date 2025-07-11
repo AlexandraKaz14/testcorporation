@@ -1,0 +1,5 @@
+cloudflared_version: "2025.4.2"
+cloudflared_tunnel_id: "a4f2582c-b080-4240-ac2d-aad08596f97c"
+cloudflared_credentials_file: "/etc/cloudflared/a4f2582c-b080-4240-ac2d-aad08596f97c.json"
+cloudflared_config_path: "/etc/cloudflared/config.yml"
+cloudflared_service_user: "root"

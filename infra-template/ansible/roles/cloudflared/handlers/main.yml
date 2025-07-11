@@ -1,0 +1,6 @@
+- name: Restart cloudflared
+  become: true
+  systemd:
+    name: cloudflared
+    state: restarted
+    enabled: true

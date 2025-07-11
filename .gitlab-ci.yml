@@ -1,0 +1,113 @@
+stages:
+  - test
+  - deploy
+
+default:
+  image: php:8.4-fpm
+  cache:
+    paths:
+      - vendor/
+  before_script:
+    - apt-get upgrade -y
+    - apt-get update -y
+    - apt-get install -y wget unzip zip
+    - apt-get install -y --no-install-recommends curl libmemcached-dev libz-dev libpq-dev libjpeg-dev
+    - apt-get install -y --no-install-recommends libpng-dev libfreetype6-dev libssl-dev libwebp-dev libxpm-dev
+    - apt-get install -y --no-install-recommends libmcrypt-dev libonig-dev libjpeg62-turbo-dev
+    - rm -rf /var/lib/apt/lists/*
+    - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
+    - docker-php-ext-install pdo pdo_pgsql pgsql
+    - docker-php-ext-configure gd --prefix=/usr --with-jpeg --with-webp --with-xpm --with-freetype
+    - docker-php-ext-install gd
+    - wget https://composer.github.io/installer.sig -O - -q | tr -d '\n' > installer.sig
+    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - php -r "if (hash_file('SHA384', 'composer-setup.php') === file_get_contents('installer.sig')) { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+    - php composer-setup.php
+    - php -r "unlink('composer-setup.php'); unlink('installer.sig');"
+    - php composer.phar install --ignore-platform-req=ext-zip --ignore-platform-req=ext-gd --ignore-platform-req=ext-http --ignore-platform-req=ext-pcntl --ignore-platform-req=ext-ftp
+    - cp .env.ci .env
+    - cp .env.ci .env.testing
+    - php artisan key:generate
+
+linter:
+  stage: test
+  script:
+    - vendor/bin/ecs
+
+phpunit:
+  stage: test
+  script:
+    - curl https://raw.githubusercontent.com/creationix/nvm/v0.20.0/install.sh | bash && mkdir -p $NVM_DIR/versions && . $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm alias default $NODE_VERSION && nvm use default
+    - npm install
+    - npm run build
+    - pecl install xdebug && docker-php-ext-enable xdebug
+    - php artisan migrate
+    - php ./vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage.cobertura.xml
+  variables:
+    XDEBUG_MODE: coverage
+    POSTGRES_DB: test_corporation_test
+    POSTGRES_USER: testuser
+    POSTGRES_PASSWORD: testpassword
+    POSTGRES_HOST_AUTH_METHOD: trust
+    NODE_VERSION: "v21.7.3"
+    NVM_DIR: "/root/.nvm"
+  services:
+    - postgres
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.cobertura.xml
+
+# 🔁 Шаблон деплоя
+.deploy_template:
+  stage: deploy
+  image: docker:latest
+  when: manual
+  needs: []
+  before_script: []
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - apk update
+    - apk upgrade
+    - apk add --no-cache sshpass openssh rsync
+    - docker build -f docker/php/Dockerfile --force-rm -t backend:latest $CI_PROJECT_DIR
+    - docker save -o backend.tar backend:latest
+    - sshpass -p $SSH_PASSWORD rsync -avz --progress -e "ssh -o StrictHostKeyChecking=no" backend.tar $SSH_USER@$SSH_HOST:backend.tar
+    - sshpass -p $SSH_PASSWORD rsync -avz --progress -e "ssh -o StrictHostKeyChecking=no" docker-compose.prod.yml $SSH_USER@$SSH_HOST:docker-compose.yml
+    - sshpass -p $SSH_PASSWORD rsync -avz --progress -e "ssh -o StrictHostKeyChecking=no" .env.production $SSH_USER@$SSH_HOST:.env
+    - sshpass -p $SSH_PASSWORD ssh -tt -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'docker load -i backend.tar'
+    - sshpass -p $SSH_PASSWORD rsync -avzr --progress -e "ssh -o StrictHostKeyChecking=no" docker/ $SSH_USER@$SSH_HOST:docker
+    - sshpass -p $SSH_PASSWORD rsync -avz --progress -e "ssh -o StrictHostKeyChecking=no" public/ $SSH_USER@$SSH_HOST:public
+    - sshpass -p $SSH_PASSWORD ssh -tt -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'docker-compose up --build -d'
+    - sshpass -p $SSH_PASSWORD ssh -tt -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p storage/framework/{views,cache,sessions}'
+    - sshpass -p $SSH_PASSWORD ssh -tt -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'docker-compose exec app chown -R www-data:www-data /var/www/storage'
+    - sshpass -p $SSH_PASSWORD ssh -tt -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'docker-compose exec app chmod -R 775 /var/www/storage'
+    - sshpass -p $SSH_PASSWORD ssh -tt -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'docker-compose exec app chown -R www-data:www-data /var/www/public'
+    - sshpass -p $SSH_PASSWORD ssh -tt -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'docker-compose exec app chmod -R 775 /var/www/public'
+    - sshpass -p $SSH_PASSWORD ssh -tt -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'docker-compose exec app php artisan migrate --force'
+    - sshpass -p $SSH_PASSWORD ssh -tt -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'docker-compose exec app php artisan cache:clear'
+    - sshpass -p $SSH_PASSWORD ssh -tt -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'docker-compose exec app php artisan config:clear'
+    - sshpass -p $SSH_PASSWORD ssh -tt -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'docker-compose exec app php artisan route:clear'
+    - sshpass -p $SSH_PASSWORD ssh -tt -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'docker-compose exec app php artisan clear-compiled'
+    - sshpass -p $SSH_PASSWORD ssh -tt -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'docker-compose exec app npm run build'
+
+# 🟠 Staging
+staging-deploy:
+  extends: .deploy_template
+  variables:
+    SSH_PASSWORD: $SSH_PASSWORD_STAGE
+    SSH_USER: $SSH_USER_STAGE
+    SSH_HOST: $SSH_HOST_STAGE
+
+# 🔴 Production
+production-deploy:
+  extends: .deploy_template
+  variables:
+    SSH_PASSWORD: $SSH_PASSWORD
+    SSH_USER: $SSH_USER
+    SSH_HOST: $SSH_HOST

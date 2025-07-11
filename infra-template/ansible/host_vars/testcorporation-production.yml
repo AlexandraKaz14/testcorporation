@@ -1,0 +1,17 @@
+project_hostname: testcorporation.ru
+grafana_hostname: grafana.testcorporation.ru
+glitchtip_hostname: glitchtip.testcorporation.ru
+
+glitchtip_secret_key: "{{ lookup('password', '/dev/null length=64 chars=ascii_letters') }}"
+glitchtip_postgres_host: 79.174.88.124
+glitchtip_postgres_port: 19909
+glitchtip_postgres_name: glitchtip
+glitchtip_postgres_user: glitchtip
+glitchtip_postgres_password: !
+
+
+motd_color: 31  # Красный
+prompt_color: 31 # Красный
+
+cloudflared_tunnel_id: "a4f2582c-b080-4240-ac2d-aad08596f97c"
+cloudflared_credentials_file: "/etc/cloudflared/a4f2582c-b080-4240-ac2d-aad08596f97c.json"

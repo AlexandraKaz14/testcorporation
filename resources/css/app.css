@@ -1,0 +1,94 @@
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+/*@import 'bootstrap-icons/font/bootstrap-icons.css';*/
+/*@import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";*/
+/*@import "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";*/
+/*@import 'datatables.net-select-bs5/css/select.bootstrap5.css';*/
+
+
+.fixed-right {
+    width: 250px;
+}
+.variable {
+    margin: 0 10px;
+    padding: 5px;
+    height: 30px;
+}
+.variable>.badge {
+    font-size: 0.9rem;
+    right: -20px;
+    top: -10px;
+}
+
+.fixedresult{
+    background-color: #f3c871;
+}
+
+.nav-link.disabled {
+    color: gray !important; /* Серый цвет для неактивных ссылок */
+    text-decoration: none; /* Убирает подчеркивание */
+    pointer-events: none; /* Делает ссылку полностью неактивной */
+}
+
+.custom-tooltip-container {
+    display: inline-block;
+    position: relative;
+}
+
+.custom-tooltip {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    position: absolute;
+    left: 50%;
+    bottom: 120%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+}
+
+.custom-tooltip-container:hover .custom-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+@media (max-width: 768px) { /* Для экранов меньше 768px */
+    .hide-mobile {
+        display: none;
+    }
+}
+
+@media print {
+    .card-tools, #print-guide, .breadcrumb {
+        display: none !important;
+    }
+    .card {
+        page-break-inside: avoid;
+        margin-bottom: 20px !important;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-only {
+        display: none;
+    }
+}
+
+.justified-text {
+    text-align: justify;  /* Равномерное выравнивание текста */
+    width: 100%;          /* Занимает всю ширину контейнера */
+    margin: 0 auto;       /* Центрирование (если нужно) */
+    box-sizing: border-box; /* Учитывает padding в ширине */
+    hyphens: auto;        /* Перенос слов (если поддерживается) */
+    word-break: break-word; /* Перенос длинных слов */
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .justified-text {
+    }
+}

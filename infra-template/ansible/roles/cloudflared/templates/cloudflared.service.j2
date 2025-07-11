@@ -1,0 +1,11 @@
+[Unit]
+Description=Cloudflared Tunnel
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/cloudflared tunnel --config {{ cloudflared_config_path }} run
+Restart=always
+User={{ cloudflared_service_user }}
+
+[Install]
+WantedBy=multi-user.target

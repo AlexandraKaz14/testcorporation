@@ -1,0 +1,25 @@
+- name: Установка UFW
+  apt:
+    name: ufw
+    state: present
+
+- name: Разрешить SSH
+  ufw:
+    rule: allow
+    port: 22
+    proto: tcp
+
+- name: Запретить графану
+  ufw:
+    rule: deny
+    port: 3000
+    proto: tcp
+
+- name: Запретить весь входящий трафик по умолчанию
+  ufw:
+    direction: incoming
+    policy: deny
+
+- name: Включить UFW
+  ufw:
+    state: enabled

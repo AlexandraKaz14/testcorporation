@@ -1,0 +1,17 @@
+- hosts:
+    - testcorporation-production
+    - testcorporation-staging
+  become: true
+  vars_files:
+    - ssh_keys.yml
+  roles:
+    - common
+    - ssh_keys
+    - firewall
+    - node_exporter
+    - prometheus
+    - grafana
+    - cloudflared
+    - docker_host
+    - glitchtip
+    - cron

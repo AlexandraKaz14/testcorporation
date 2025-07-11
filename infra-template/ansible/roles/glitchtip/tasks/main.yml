@@ -1,0 +1,19 @@
+- name: Create GlitchTip directory
+  file:
+    path: /opt/glitchtip
+    state: directory
+
+- name: Copy .env file
+  template:
+    src: ../files/.env
+    dest: /opt/glitchtip/.env
+
+- name: Copy docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/glitchtip/docker-compose.yml
+
+- name: Start GlitchTip with Docker Compose v2
+  community.docker.docker_compose_v2:
+    project_src: /opt/glitchtip
+    state: present

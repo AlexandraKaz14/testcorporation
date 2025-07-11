@@ -1,0 +1,15 @@
+- name: Настройка cron задач
+  cron:
+    name: "Очистка Docker (prune)"
+    minute: "0"
+    hour: "12"
+    job: "docker container prune -f && docker image prune -a -f && docker volume prune -f && docker system prune -f"
+    state: present
+
+- name: Очистка логов
+  cron:
+    name: "Очистка логов"
+    minute: "0"
+    hour: "12"
+    job: "find /var/log -type f -name '*.log' -exec rm -f {} \\;"
+    state: present

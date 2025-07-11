@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Показываем только если root
+if [ "$EUID" -eq 0 ]; then
+  COLOR="{{ motd_color | default('32') }}"  # по умолчанию зелёный (32)
+  HOSTNAME="{{ inventory_hostname }}"
+  echo -e "\033[1;${COLOR}mВы вошли на сервер: ${HOSTNAME}\033[0m"
+fi

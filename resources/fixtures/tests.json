@@ -1,0 +1,273 @@
+[
+    {
+        "title": "Кто ты из смешариков?",
+        "description": "Этот тест поможет узнать, каким смешариком ты мог бы быть! Ты весёлый и озорной, или, может быть, серьёзный и рассудительный? Ответь на вопросы и узнай, кто из героев этого забавного мультфильма ближе всего к твоему характеру!",
+        "tags": ["смешарики", "развлечения", "мультфильмы"],
+        "slug": "/kto-ty-iz-smesharikov",
+        "categories": ["Развлечения", "Детские тесты"],
+        "picture": "https://cataas.com/cat?width=500&height=500",
+        "questions": [
+            {
+                "text": "Как ты обычно проводишь свободное время?",
+                "picture": null,
+                "answers": [
+                    {
+                        "text": "Читаю книги или учусь чему-то новому",
+                        "picture": null,
+                        "reactions": [
+                            {
+                                "variable": "лосяш",
+                                "operation": "addition",
+                                "value": 5
+                            }
+                        ]
+                    },
+                    {
+                        "text": "Активно двигаюсь — спорт или прогулки",
+                        "picture": null,
+                        "reactions": [
+                            {
+                                "variable": "крош",
+                                "operation": "addition",
+                                "value": 5
+                            }
+                        ]
+                    },
+                    {
+                        "text": "Занимаюсь чем-то творческим",
+                        "picture": null,
+                        "reactions": [
+                            {
+                                "variable": "нюша",
+                                "operation": "addition",
+                                "value": 5
+                            }
+                        ]
+                    },
+                    {
+                        "text": "Лежу на диване и мечтаю о чём-то",
+                        "picture": null,
+                        "reactions": [
+                            {
+                                "variable": "ёжик",
+                                "operation": "addition",
+                                "value": 5
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "text": "Как ты относишься к приключениям?",
+                "picture": "https://cataas.com/cat?width=500&height=500",
+                "answers": [
+                    {
+                        "text": "Люблю, когда всё спокойно и предсказуемо",
+                        "picture": null,
+                        "reactions": [
+                            {
+                                "variable": "копатыч",
+                                "operation": "addition",
+                                "value": 5
+                            }
+                        ]
+                    },
+                    {
+                        "text": "Обожаю приключения и поиск новых впечатлений!",
+                        "picture": null,
+                        "reactions": [
+                            {
+                                "variable": "крош",
+                                "operation": "addition",
+                                "value": 5
+                            }
+                        ]
+                    },
+                    {
+                        "text": "Иногда хочется чего-то нового, но без риска",
+                        "picture": null,
+                        "reactions": [
+                            {
+                                "variable": "ёжик",
+                                "operation": "addition",
+                                "value": 5
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "variables": [
+            { "name": "лосяш", "init": 0 },
+            { "name": "крош", "init": 0 },
+            { "name": "нюша", "init": 0 },
+            { "name": "ёжик", "init": 0 },
+            { "name": "копатыч", "init": 0 }
+        ],
+        "results": [
+            {
+                "condition": "max(лосяш, крош, нюша, ёжик, копатыч) == лосяш",
+                "text": "Ты — Лосяш! Обожаешь науку, всегда стремишься к знаниям и можешь часами рассуждать на любую тему.",
+                "picture": "https://cataas.com/cat?width=500&height=500"
+            },
+            {
+                "condition": "max(лосяш, крош, нюша, ёжик, копатыч) == крош",
+                "text": "Ты — Крош! Весёлый, энергичный и всегда в поисках приключений, ты не боишься рисковать и всегда готов к новым подвигам.",
+                "picture": "https://cataas.com/cat?width=500&height=500"
+            },
+            {
+                "condition": "max(лосяш, крош, нюша, ёжик, копатыч) == нюша",
+                "text": "Ты — Нюша! Творческая и заботливая, любишь быть в центре внимания и обожаешь заниматься искусством.",
+                "picture": "https://cataas.com/cat?width=500&height=500"
+            },
+            {
+                "condition": "max(лосяш, крош, нюша, ёжик, копатыч) == ёжик",
+                "text": "Ты — Ёжик! Ты мечтателен, ценишь спокойствие и уют, и всегда в поиске гармонии в жизни.",
+                "picture": "https://cataas.com/cat?width=500&height=500"
+            },
+            {
+                "condition": "max(лосяш, крош, нюша, ёжик, копатыч) == копатыч",
+                "text": "Ты — Копатыч! Практичный и трудолюбивый, ты всегда занят делом и любишь порядок. Садовод и заботливый хозяин.",
+                "picture": "https://cataas.com/cat?width=500&height=500"
+            },
+            {
+                "condition": "true",
+                "text": "Ты — уникальный смешарик, твои качества могут сочетаться в тебе, делая тебя необычным и неповторимым!",
+                "picture": "https://cataas.com/cat?width=500&height=500"
+            }
+        ]
+    },
+    {
+        "title": "Какой у тебя темперамент?",
+        "description": "Этот тест поможет определить твой тип темперамента: сангвиник, флегматик, меланхолик или холерик. Ответь на вопросы, и ты узнаешь, какие черты характера у тебя преобладают!",
+        "tags": ["психология", "темперамент", "характер"],
+        "slug": "/kakoy-u-tebya-temperament",
+        "categories": ["Психология", "Саморазвитие"],
+        "picture": "https://cataas.com/cat?width=500&height=500",
+        "questions": [
+            {
+                "text": "Как ты реагируешь на неожиданные изменения в планах?",
+                "answers": [
+                    { "text": "Спокойно, меня это не особо тревожит", "reactions": [{ "variable": "флегматик", "operation": "addition", "value": 5 }] },
+                    { "text": "Резко, могу даже рассердиться", "reactions": [{ "variable": "холерик", "operation": "addition", "value": 5 }] },
+                    { "text": "Меня это расстраивает, я долго переживаю", "reactions": [{ "variable": "меланхолик", "operation": "addition", "value": 5 }] },
+                    { "text": "Быстро подстраиваюсь под новые обстоятельства", "reactions": [{ "variable": "сангвиник", "operation": "addition", "value": 5 }] }
+                ]
+            },
+            {
+                "text": "Как ты обычно ведёшь себя в компании незнакомых людей?",
+                "answers": [
+                    { "text": "Охотно знакомлюсь и быстро нахожу общий язык", "reactions": [{ "variable": "сангвиник", "operation": "addition", "value": 5 }] },
+                    { "text": "Мне трудно привыкнуть к новым людям, но со временем это проходит", "reactions": [{ "variable": "меланхолик", "operation": "addition", "value": 5 }] },
+                    { "text": "Предпочитаю держаться в стороне и не вступать в разговоры", "reactions": [{ "variable": "флегматик", "operation": "addition", "value": 5 }] },
+                    { "text": "Веду себя очень активно, иногда даже чересчур", "reactions": [{ "variable": "холерик", "operation": "addition", "value": 5 }] }
+                ]
+            },
+            {
+                "text": "Как ты обычно принимаешь решения?",
+                "answers": [
+                    { "text": "Спонтанно, не задумываясь", "reactions": [{ "variable": "холерик", "operation": "addition", "value": 5 }] },
+                    { "text": "Продумываю всё до мелочей", "reactions": [{ "variable": "флегматик", "operation": "addition", "value": 5 }] },
+                    { "text": "Сначала обдумываю, но могу быстро передумать", "reactions": [{ "variable": "сангвиник", "operation": "addition", "value": 5 }] },
+                    { "text": "Сомневаюсь и переживаю, прежде чем сделать выбор", "reactions": [{ "variable": "меланхолик", "operation": "addition", "value": 5 }] }
+                ]
+            },
+            {
+                "text": "Как ты ведёшь себя в стрессовых ситуациях?",
+                "answers": [
+                    { "text": "Спокойно, мне удаётся сохранить хладнокровие", "reactions": [{ "variable": "флегматик", "operation": "addition", "value": 5 }] },
+                    { "text": "Сильно переживаю и долго восстанавливаюсь", "reactions": [{ "variable": "меланхолик", "operation": "addition", "value": 5 }] },
+                    { "text": "Действую быстро и энергично", "reactions": [{ "variable": "холерик", "operation": "addition", "value": 5 }] },
+                    { "text": "Могу слегка нервничать, но быстро справляюсь", "reactions": [{ "variable": "сангвиник", "operation": "addition", "value": 5 }] }
+                ]
+            },
+            {
+                "text": "Как ты планируешь свой день?",
+                "answers": [
+                    { "text": "Действую по заранее составленному плану", "reactions": [{ "variable": "флегматик", "operation": "addition", "value": 5 }] },
+                    { "text": "Живу спонтанно, не люблю планировать", "reactions": [{ "variable": "сангвиник", "operation": "addition", "value": 5 }] },
+                    { "text": "Составляю план, но часто его меняю", "reactions": [{ "variable": "меланхолик", "operation": "addition", "value": 5 }] },
+                    { "text": "Составляю план, но действую быстро и активно", "reactions": [{ "variable": "холерик", "operation": "addition", "value": 5 }] }
+                ]
+            },
+            {
+                "text": "Как ты реагируешь на критику?",
+                "answers": [
+                    { "text": "Спокойно выслушиваю и принимаю к сведению", "reactions": [{ "variable": "флегматик", "operation": "addition", "value": 5 }] },
+                    { "text": "Критика меня обижает, я долго об этом думаю", "reactions": [{ "variable": "меланхолик", "operation": "addition", "value": 5 }] },
+                    { "text": "Могу резко ответить на критику", "reactions": [{ "variable": "холерик", "operation": "addition", "value": 5 }] },
+                    { "text": "Принимаю её легко, если она конструктивная", "reactions": [{ "variable": "сангвиник", "operation": "addition", "value": 5 }] }
+                ]
+            },
+            {
+                "text": "Как ты ведёшь себя в конфликтных ситуациях?",
+                "answers": [
+                    { "text": "Предпочитаю избегать конфликтов", "reactions": [{ "variable": "меланхолик", "operation": "addition", "value": 5 }] },
+                    { "text": "Решаю конфликты спокойно и логично", "reactions": [{ "variable": "флегматик", "operation": "addition", "value": 5 }] },
+                    { "text": "Быстро вступаю в спор, отстаиваю свою позицию", "reactions": [{ "variable": "холерик", "operation": "addition", "value": 5 }] },
+                    { "text": "Стремлюсь найти компромисс", "reactions": [{ "variable": "сангвиник", "operation": "addition", "value": 5 }] }
+                ]
+            },
+            {
+                "text": "Что для тебя важнее всего в жизни?",
+                "answers": [
+                    { "text": "Спокойствие и стабильность", "reactions": [{ "variable": "флегматик", "operation": "addition", "value": 5 }] },
+                    { "text": "Гармония и душевное равновесие", "reactions": [{ "variable": "меланхолик", "operation": "addition", "value": 5 }] },
+                    { "text": "Динамика и движение", "reactions": [{ "variable": "холерик", "operation": "addition", "value": 5 }] },
+                    { "text": "Общение и новые впечатления", "reactions": [{ "variable": "сангвиник", "operation": "addition", "value": 5 }] }
+                ]
+            },
+            {
+                "text": "Как ты справляешься с долгосрочными задачами?",
+                "answers": [
+                    { "text": "Медленно, но уверенно продвигаюсь к цели", "reactions": [{ "variable": "флегматик", "operation": "addition", "value": 5 }] },
+                    { "text": "Меня легко отвлечь, иногда бросаю на полпути", "reactions": [{ "variable": "меланхолик", "operation": "addition", "value": 5 }] },
+                    { "text": "Работаю быстро и активно, но могу терять интерес", "reactions": [{ "variable": "холерик", "operation": "addition", "value": 5 }] },
+                    { "text": "Планирую каждый этап и двигаюсь вперёд", "reactions": [{ "variable": "сангвиник", "operation": "addition", "value": 5 }] }
+                ]
+            },
+            {
+                "text": "Что тебе больше нравится?",
+                "answers": [
+                    { "text": "Спокойные прогулки и уединение", "reactions": [{ "variable": "флегматик", "operation": "addition", "value": 5 }] },
+                    { "text": "Сидеть дома и думать о чем-то", "reactions": [{ "variable": "меланхолик", "operation": "addition", "value": 5 }] },
+                    { "text": "Активный отдых и приключения", "reactions": [{ "variable": "холерик", "operation": "addition", "value": 5 }] },
+                    { "text": "Весёлые компании и вечеринки", "reactions": [{ "variable": "сангвиник", "operation": "addition", "value": 5 }] }
+                ]
+            }
+        ],
+        "variables": [
+            { "name": "сангвиник", "init": 0 },
+            { "name": "флегматик", "init": 0 },
+            { "name": "меланхолик", "init": 0 },
+            { "name": "холерик", "init": 0 }
+        ],
+        "results": [
+            {
+                "condition": "max(сангвиник, флегматик, меланхолик, холерик) == сангвиник",
+                "text": "Ты — сангвиник! Жизнерадостный, активный и общительный человек, который легко находит общий язык с окружающими.",
+                "picture": "https://cataas.com/cat?width=500&height=500"
+            },
+            {
+                "condition": "max(сангвиник, флегматик, меланхолик, холерик) == флегматик",
+                "text": "Ты — флегматик! Спокойный, уравновешенный и терпеливый человек, который всегда сохраняет самообладание.",
+                "picture": "https://cataas.com/cat?width=500&height=500"
+            },
+            {
+                "condition": "max(сангвиник, флегматик, меланхолик, холерик) == меланхолик",
+                "text": "Ты — меланхолик! Чувствительный, задумчивый и тонко чувствующий человек, который склонен к глубоким переживаниям.",
+                "picture": "https://cataas.com/cat?width=500&height=500"
+            },
+            {
+                "condition": "max(сангвиник, флегматик, меланхолик, холерик) == холерик",
+                "text": "Ты — холерик! Энергичный, вспыльчивый и решительный человек, который быстро реагирует на происходящее.",
+                "picture": "https://cataas.com/cat?width=500&height=500"
+            },
+            {
+                "condition": "true",
+                "text": "У тебя уникальное сочетание черт характера, которые сложно отнести к одному типу темперамента.",
+                "picture": "https://cataas.com/cat?width=500&height=500"
+            }
+        ]
+    }
+]

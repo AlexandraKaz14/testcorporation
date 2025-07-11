@@ -1,0 +1,8 @@
+- name: Настройка SSH-ключей на серверах
+  authorized_key:
+    user: "{{ ansible_user }}"
+    state: present
+    key: "{{ item }}"
+  with_items:
+    - "{{ ssh_public_keys }}"
+  become: true

@@ -1,0 +1,48 @@
+- name: Create cloudflared directory
+  file:
+    path: /etc/cloudflared
+    state: directory
+    mode: '0755'
+
+- name: Download cloudflared binary
+  get_url:
+    url: "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64"
+    dest: /usr/local/bin/cloudflared
+    mode: '0755'
+
+- name: Upload cloudflared config
+  template:
+    src: config.yml.j2
+    dest: "{{ cloudflared_config_path }}"
+    mode: '0644'
+
+- name: Upload systemd unit
+  template:
+    src: cloudflared.service.j2
+    dest: /etc/systemd/system/cloudflared.service
+    mode: '0644'
+
+- name: Copy credentials file (загрузи в playbook отдельно)
+  copy:
+    src: "{{ cloudflared_tunnel_id }}.json"
+    dest: "{{ cloudflared_credentials_file }}"
+    mode: '0600'
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Enable and start cloudflared service
+  systemd:
+    name: cloudflared
+    enabled: yes
+    state: started
+
+- name: Upload cloudflared config
+  template:
+    src: config.yml.j2
+    dest: /etc/cloudflared/config.yml
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart cloudflared
